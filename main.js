@@ -1,14 +1,66 @@
-/** @param {NS} ns */
+// main.js
+// Bitburner v2.5.0 (b87b8b4be)
+// qst: https://qst0.com // https://qst4.com
+// src: https://github.com/qst0/bitburner
 
-/* TODO
-WIP work script updates with hacking level
-save config to localstorage, config flag
-fix reset flag and local storage
-backdoor solution?
-integrate purchasing of servers for reset
-work script has data calls that could be replaced with hard numbers to save ram.
-project / goal management or rank
-*/
+/** @param {import(".").NS } ns */
+
+// TODO Gerenate server data, don't hard code
+// or use copy pasta fix thisGPT lol
+// as you can see below tho, it works.
+// (note: scan to your available depth e.g 3, 5 or 10)
+// scan-analyze 10
+// copy the data and ask for it in the right form, sort in python
+// hard_server_data.sort(key=lambda x: (x[2], x[1]), reverse=True)
+const hard_server_data = [['solaris', 912, 5],
+['defcomm', 903, 5],
+['taiyang-digital', 888, 5],
+['aerocorp', 887, 5],
+['icarus', 885, 5],
+['infocomm', 876, 5],
+['galactic-cyber', 869, 5],
+['omnia', 853, 5],
+['deltaone', 849, 5],
+['syscore', 849, 5],
+['zeus-med', 832, 5],
+['zb-institute', 726, 5],
+['darkweb', 1, 5],
+['univ-energy', 840, 4],
+['unitalife', 813, 4],
+['nova-med', 786, 4],
+['global-pharm', 777, 4],
+['zb-def', 776, 4],
+['snap-fitness', 711, 4],
+['lexo-corp', 689, 4],
+['alpha-ent', 600, 4],
+['aevum-police', 441, 4],
+['millenium-fitness', 525, 3],
+['rho-construction', 510, 3],
+['summit-uni', 466, 3],
+['rothman-uni', 430, 3],
+['catalyst', 409, 3],
+['netlink', 401, 3],
+['I.I.I.I', 340, 3],
+['computek', 320, 3],
+['johnson-ortho', 292, 2],
+['the-hub', 280, 2],
+['crush-fitness', 246, 2],
+['avmnite-02h', 212, 2],
+['omega-net', 205, 2],
+['silver-helix', 150, 2],
+['phantasy', 100, 2],
+['iron-gym', 100, 1],
+['max-hardware', 80, 1],
+['zer0', 75, 1],
+['CSEC', 53, 1],
+['neo-net', 50, 1],
+['harakiri-sushi', 40, 0],
+['hong-fang-tea', 30, 0],
+['nectar-net', 20, 0],
+['joesguns', 10, 0],
+['sigma-cosmetics', 5, 0],
+['n00dles', 1, 0],
+['foodnstuff', 1, 0]]
 
 //        //  
 /* CONFIG */
@@ -18,7 +70,7 @@ const this_filename = 'core.js'
 const work_script_filename = 'work.js'
 const hostname_prefix = 'qst';
 let upgrade_servers_on = false;
-let roll_out_on = false;
+let deploy_on = false;
 let server_dict = localStorage.getItem('server_dict');
 
 if (!server_dict) {
@@ -27,21 +79,26 @@ if (!server_dict) {
   localStorage.setItem('server_dict', JSON.stringify(server_dict));
 } else {
   server_dict = JSON.parse(server_dict);
+  console.log("Loaded Server Data from localStorage:", server_dict)
 }
 
 let server_dict_len = Object.keys(server_dict).length;
 // prepare ns update_data vars
-let mem_core, mem_work, home_ram, hacking_level, server_limit, money, ports_open;
+let mem_main, mem_work, home_ram, hacking_level, server_limit, money, ports_open;
 
 //      //
 /* MAIN */
 //      //
 export async function main(ns) {
+  console.log("ns:", ns);
   ns.tprint('Program START');
-  // Args NOT USED, use flags!
-  //Print the args
-  for (let i = 0; i < ns.args.length; i++) {
-    console.log(ns.args[i])
+  //Print the args in the console, if there are any
+  if (ns.args.length){
+    let msg = " "
+    for (let i = 0; i < ns.args.length; i++) {
+      msg = msg + " " + ns.args[i]
+    }
+    console.log(msg.trim())
   }
 
   //.......//
@@ -65,7 +122,7 @@ export async function main(ns) {
   } else if (args.purchase_servers || args.buy) {
     purchase_servers()
   } else if (args.deploy) {
-    roll_out_on = true;
+    deploy_on = true;
   }
 
   //            //
@@ -80,13 +137,14 @@ export async function main(ns) {
 
 
   function update_data() {
-    mem_core = ns.getScriptRam(this_filename);
-    mem_core = ns.getScriptRam(this_filename);
+    mem_main = ns.getScriptRam(this_filename);
     mem_work = ns.getScriptRam(work_script_filename)
     home_ram = ns.getServerMaxRam("home")
     hacking_level = ns.getHackingLevel()
     server_limit = ns.getPurchasedServerLimit()
     money = ns.getServerMoneyAvailable("home")
+    // if we get a new hacking program, we need to know.
+    // for now, just always recheck on update to confirm
     ports_open = 0;
     if (ns.fileExists("BruteSSH.exe", "home")) {
       ports_open++;
@@ -115,58 +173,93 @@ export async function main(ns) {
     }
   }
 
-  function run_each_server(targets) {
-    let servers_rolled_out = 0
-    for (const target in targets) {
-      let server = ns.getServer(target)
-      discover_servers(target)
+  // USES HARD DATA FROM TOP OF FILE. TODO use SERVER DATA/DICT
+  function select_target(hackLevel, portsOpen, data) {
+    let highestValue = -1; // Init with a low value
+    let target = null;
 
-      let port_opener_count = 5
-      if (!server.hasAdminRights || server.openPortCount < port_opener_count) {
+    for (let i = 0; i < data.length; i++) {
+      let serverHackLevel = data[i][1];
+      let serverPortsOpen = data[i][2];
+
+      if (serverHackLevel <= hackLevel && serverPortsOpen <= portsOpen) {
+        // use a better formula here this just avoids hacking home and dark-net
+        let value = serverHackLevel * serverPortsOpen;
+
+        if (value > highestValue) {
+          highestValue = value;
+          target = data[i][0];
+        }
+      }
+    }
+
+    return target;
+  }
+
+
+
+  function run_each_server(hostnames) {
+    let servers_deployed_to = 0
+    for (const hostname in hostnames) {
+      let server = ns.getServer(hostname)
+      discover_servers(hostname)
+
+      if (!server.hasAdminRights || server.openPortCount < ports_open) {
         if (ns.fileExists("BruteSSH.exe", "home")) {
-          ns.brutessh(target)
+          ns.brutessh(hostname)
         }
         if (ns.fileExists("FTPCrack.exe", "home")) {
-          ns.ftpcrack(target)
+          ns.ftpcrack(hostname)
         }
         if (ns.fileExists("relaySMTP.exe", "home")) {
-          ns.relaysmtp(target)
+          ns.relaysmtp(hostname)
         }
         if (ns.fileExists("HTTPWorm.exe", "home")) {
-          ns.httpworm(target)
+          ns.httpworm(hostname)
         }
         if (ns.fileExists("SQLInject.exe", "home")) {
-          ns.sqlinject(target)
+          ns.sqlinject(hostname)
         }
 
         if (server.openPortCount >= server.numOpenPortsRequired) {
-          ns.nuke(target);
+          ns.nuke(hostname);
         }
       }
 
-      if (roll_out_on
+
+
+      if (deploy_on
         && server.maxRam > mem_work
         && server.hostname != 'home') {
-        ns.scp(work_script_filename, target)
-        ns.killall(target)
-        ns.exec(work_script_filename, target, Math.floor(server.maxRam / mem_work), hacking_level, ports_open)
-        servers_rolled_out++;
+        ns.scp(work_script_filename, hostname)
+        let killed = ns.killall(hostname)
+        if (killed){
+          ns.tprint("killall "+hostname)
+        }
+        target = select_target(hacking_level, ports_open, hard_server_data)
+        ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
+          target,server_dict[target].moneyMax, server_dict[target].minDifficulty)
+        servers_deployed_to++;
       }
 
     }
     // Finished roll out, turn it off.
-    if (roll_out_on) {
-      console.log("Finished rolling out to " + servers_rolled_out + " servers!")
-      roll_out_on = false;
+    if (deploy_on) {
+      console.log("Finished deploying workers to " + servers_deployed_to + " servers!")
+      deploy_on = false;
     }
 
   }
+
 
   //..................//
   // async functions  //
   //..................//
 
   async function purchase_servers() {
+    ns.exec('purchase-servers.js', 'home')
+    ns.tprint("ERROR: Please `run purchase-servers.js` instead")
+    /* 
     const purchase_ram = 4;
     let i = 0;
     while (i < ns.getPurchasedServerLimit()) {
@@ -179,6 +272,7 @@ export async function main(ns) {
       }
       await ns.sleep(1000);
     }
+    */
   }
 
   async function upgrade_servers() {
@@ -191,7 +285,9 @@ export async function main(ns) {
         ns.upgradePurchasedServer(hostname, ram);
         //spin up another worker
         ns.killall(hostname)
-        ns.exec(work_script_filename, hostname, Math.floor(ram / mem_work));
+        target = select_target(hacking_level, ports_open, hard_server_data)
+        ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
+          target,server_dict[target].moneyMax, server_dict[target].minDifficulty)
 
       } else {
         //console.log("Cannot Upgrade " + hostname + " to " + ram + "\n" +
@@ -203,14 +299,16 @@ export async function main(ns) {
   }
 
   // Home Work
-  update_data();
-  //ns.killall('home') // why doesn't it stop itself lol
-  console.log(home_ram,mem_core,home_ram-mem_core)
-  //TODO rename mem_core to mem_main
+  update_data(); // Make sure we have the most up to date data
+  ns.tprint('killall home')
+  ns.killall('home') // it doesn't stop itself ;-)
+  console.log(home_ram, mem_main, home_ram - mem_main)
   //TODO fix this... why need to *2 why won't work run?
-  let home_mem_left = home_ram-mem_core*2
-  ns.exec(work_script_filename,"home", Math.floor(home_mem_left / mem_work), hacking_level, ports_open)
-  
+  let home_mem_left = home_ram - mem_main * 2
+  let target = select_target(hacking_level,ports_open,hard_server_data)
+  ns.exec(work_script_filename, "home", Math.floor(home_mem_left / mem_work),
+   target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+
   // Functions END
   let question = "Would you like to configure?"
   let reset_config = await (ns.prompt(question))
@@ -225,7 +323,7 @@ export async function main(ns) {
     }
 
     question = "Deploy on all servers?"
-    roll_out_on = await (ns.prompt(question))
+    deploy_on = await (ns.prompt(question))
 
     question = "Upgrade servers?"
     upgrade_servers_on = await (ns.prompt(question))
@@ -245,7 +343,7 @@ export async function main(ns) {
       save_server_dict();
       // TODO, make sure this is true
       // I'm done searching if I find 96 servers
-      if (server_dict_len >= known_highest_server_count){
+      if (server_dict_len >= known_highest_server_count) {
         console.log("search complete", server_dict, server_dict_len)
         searching = false;
       }
