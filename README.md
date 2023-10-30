@@ -6,6 +6,14 @@ These are my scripts I've been using to automate the discovery and hacking of ta
 
 ## Thoughts about the game:
 
+Since last Augmentation installation
+
+7 hours 9 minutes 3 seconds
+
+Total
+
+2 days 14 hours 18 minutes 19 seconds
+
 It's the 30th of Oct 2023 now, I've been playing for two days or so, I had some tiem tonight to rework almost everything about the way main launches work. Now to make it smarter...
 
 I'll update my todo list, but I think I'm making good progress and my js skills are coming back.
