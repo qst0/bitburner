@@ -8,6 +8,7 @@ export async function main(ns) {
   // Gerenate server data, don't hard code
   // or use copy pasta fix thisGPT lol
   // as you can see below tho, it works.
+  // (note: scan to your available depth e.g 3, 5 or 10)
   // scan-analyze 10
   // copy the data and ask for it in the right form, sort in python
   // server_data.sort(key=lambda x: (x[2], x[1]), reverse=True)

@@ -1,10 +1,20 @@
 # BitBurner
 
-While looking for games that help with coding/automation mindset I discovered Bitburner.
+While looking for games that help with coding/automation mindset I discovered [Bitburner](https://bitburner-official.github.io/).
 
-These are my scripts I've been using to automate the discovery and hacking of targets in the game.
+[https://bitburner-official.github.io/](https://bitburner-official.github.io/)
 
-## Thoughts about the game:
+# What's this code?
+
+These are my net scripts I've been using to automate the discovery and hacking of targets in the game. Using the dev in game instructions and the dev tools I continue to improve them.
+
+I have tried my best to figure everything out from the in-game instructions but have used the dev tools and the docs a few times to obtain knowledge. I think it's in the spirit of the game to do so, but I've been trying to challenge myself since this gamification of coding has turned out to be really fun.
+
+## Thoughts about the game as I played it:
+
+I left everything running overnight, I woke up and the server I was targeting has no money left. Figuring out a way to move forward from that would be good. I think just updating the data and rolling out again, that is deploying work.js again to all of the purchased servers with my updated hacking level, port opener count and target when I see the server has nothing left could work. Testing it live will take time, so maybe I should write tests? I'll check my todo-list. I'm trying to get a few more augmentations from The Black Hand before I reset. I'm sitting on 400b but I need a bit more to upgrade the cores on my home computer and I still want to buy more augmentations before I install them. The game loop is very fun and I think when I get to the end game I want to look at the codebase more. I bought Formulas.exe last time and I didn't use it. A waste of 5b. But I don't really know how, so I need to figure that out. I'm at 775~ hacking level now, and you can write Formulas.exe yourself at 1000. But I think buying it might be faster. I scale faster with my private servers. I wonder if installing more frequently is a better tactic?
+
+--
 
 Since last Augmentation installation
 
