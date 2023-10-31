@@ -285,8 +285,8 @@ export async function main(ns) {
         ns.upgradePurchasedServer(hostname, ram);
         //spin up another worker
         ns.killall(hostname)
-        target = select_target(hacking_level, ports_open, hard_server_data)
-        ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
+        let target = select_target(hacking_level, ports_open, hard_server_data)
+        ns.exec(work_script_filename, hostname, Math.floor(ram / mem_work),
           target,server_dict[target].moneyMax, server_dict[target].minDifficulty)
 
       } else {

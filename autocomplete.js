@@ -2,6 +2,8 @@
 // https://qst0.com // https://qst4.com
 // src: https://github.com/qst0/bitburner
 
+import { CrimeType } from ".";
+
 // Autocomplete will only work in game when using:
 /** @param {NS} ns */
 
@@ -11,6 +13,9 @@
 /** @param {import(".").NS } ns */
 
 export async function main(ns) {
-  // you now have autocomplete for all `ns.` commands.
+  ns.tprint("INFO No need to run this script, it's an example.")
+  ns.tprint("ERROR did you make sure to follow the instructions?")
+  ns.tprint("SUCCESS you now have autocomplete for all `ns.` commands.")
   const hackingLevel = ns.getHackingLevel();
+  // ns.singularity.commitCrime(
 }
