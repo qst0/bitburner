@@ -1,11 +1,11 @@
 // purchase-servers.js
 // Bitburner v2.5.0 (b87b8b4be)
-// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
-// wget https://github.com/qst0/bitburner/blob/main/purchase-servers.js purchase-servers.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/work.js work.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/purchase-servers.js purchase-servers.js
 
 /** @param {NS} ns */
 export async function main(ns) {
-    const ram = 4;
+    const ram = 1;
     const mem_work = ns.getScriptRam('work.js')
     const hostname_prefix = 'qst';
     let i = 0;

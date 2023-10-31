@@ -18,6 +18,7 @@ I have tried my best to figure everything out from the in-game instructions but 
 * save config to localstorage, config flag
 * automate backdoor / reach singularity.
 * work script has data calls that could be replaced with hard numbers to save ram.
+* move to github issue tracking?
 
 ## Hack/Dev Log + Thoughts about Bitburner as I play it:
 
@@ -28,6 +29,8 @@ Goals for this day: hack based on server_data, not HARD_DATA
 
 ### Oct 30th
 
+The break wasn't very long, I peeked back around 2300H or so and the rep was past 75k so I grabbed all of the augmentations and installed. I found errors in my main.js and approach... I need to make the server picker select_target or whatever I can it, a lot better. I have the data. So I just need to use it, and I need to think about how I don't have the data at first and how I get it by searching a few loops. I'm not doing things in the right order. Anyway, now I think it's going along well. It just needs to pick new targets without my intervertion...
+
 I spent some time cleaning up the repo and updating the README because I like that sort of thing. Kinda silly but fun. Now I should seriously take that break :-)
 
 Time Played:
@@ -37,7 +40,7 @@ Since last Augmentation installation 5 hours 59 minutes 37 seconds
 Total: 3 days 9 hours 48 minutes 42 seconds
 
 
-It's almost the 31st, ~22:20 now I've hit a bit of a slump in my motivation. I need to figure out what I want to do next, after I get the rep and agumentations for Tian Di Hui, which is what I'm having the character focus on now. I should make the server finder smarter and not just find the hardest thing to weaken/grow/hack and go for it with all of the power. But I need a plan for that. I should look at the formulas.exe again but before that I know I can at least use the server_data/dict that I make when searching to pick the servers like I do now, but a bit smarter and with a complete list, which I think is 96 hosts, but I can't confirm that yet. 10k rep left. I guess I'll let it idle and find something else to do for a bit. Let my brain settle before this feels like work instead of fun-work. I joined the discord. I'm still in the early game, since I haven't finished fl1ght.exe! But that's all I asked/looked at for the most part. Don't want to spoil it for myself.
+It's almost the 31st, ~2220H now I've hit a bit of a slump in my motivation. I need to figure out what I want to do next, after I get the rep and agumentations for Tian Di Hui, which is what I'm having the character focus on now. I should make the server finder smarter and not just find the hardest thing to weaken/grow/hack and go for it with all of the power. But I need a plan for that. I should look at the formulas.exe again but before that I know I can at least use the server_data/dict that I make when searching to pick the servers like I do now, but a bit smarter and with a complete list, which I think is 96 hosts, but I can't confirm that yet. 10k rep left. I guess I'll let it idle and find something else to do for a bit. Let my brain settle before this feels like work instead of fun-work. I joined the discord. I'm still in the early game, since I haven't finished fl1ght.exe! But that's all I asked/looked at for the most part. Don't want to spoil it for myself.
 
 I've moved some of the project tracking into the repo.
 

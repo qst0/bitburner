@@ -1,6 +1,6 @@
 // autocomplete.js
 // Bitburner v2.5.0
-// wget https://github.com/qst0/bitburner/blob/main/autocomplete.js autocomplete.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/autocomplete.js autocomplete.js
 
 // Autocomplete in vscode using :
 

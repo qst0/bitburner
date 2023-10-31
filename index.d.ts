@@ -1,3 +1,7 @@
+// index.d.ts
+// Bitburner v2.5.0
+// Sourced from:
+// https://github.com/bitburner-official/bitburner-src/blob/stable/src/ScriptEditor/NetscriptDefinitions.d.ts
 /** All netscript definitions */
 
 /** @public */

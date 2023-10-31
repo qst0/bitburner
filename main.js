@@ -1,7 +1,7 @@
 // main.js
 // Bitburner v2.5.0 (b87b8b4be)
-// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
-// wget https://github.com/qst0/bitburner/blob/main/main.js main.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/work.js work.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/main.js main.js
 
 /** @param {import(".").NS } ns */
 
@@ -54,7 +54,6 @@ const hard_server_data = [['solaris', 912, 5],
 ['iron-gym', 100, 1],
 ['max-hardware', 80, 1],
 ['zer0', 75, 1],
-['CSEC', 53, 1],
 ['neo-net', 50, 1],
 ['harakiri-sushi', 40, 0],
 ['hong-fang-tea', 30, 0],
@@ -198,7 +197,7 @@ export async function main(ns) {
         }
       }
     }
-
+    console.log("Targeting: ", target)
     return target;
   }
 
@@ -305,13 +304,21 @@ export async function main(ns) {
   let target = select_target(hacking_level, ports_open, hard_server_data)
   let threads = Math.floor(home_mem_left / mem_work)
   console.log("threads", threads)
+  console.log("target", target)
+  let moneyMax = 1000000000
+  let minDifficulty = 100
+  if (server_dict[target]) {
+    moneyMax = server_dict[target].moneyMax;
+    minDifficulty = server_dict[target].minDifficulty;
+  } 
   ns.exec(
     work_script_filename,
     "home",
     threads,
     target,
-    server_dict[target].moneyMax,
-    server_dict[target].minDifficulty)
+    moneyMax,
+    minDifficulty
+  )
 
   // Functions END
   let question = "Would you like to configure?"

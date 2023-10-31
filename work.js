@@ -1,6 +1,6 @@
 // work.js
 // Bitburner v2.5.0 (b87b8b4be)
-// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/work.js work.js
 /** @param {import(".").NS } ns */
 
 export async function main(ns) {
@@ -34,9 +34,9 @@ export async function main(ns) {
     
     let targetSecurityLevel = ns.getServerSecurityLevel(target)
     let targetMoney = ns.getServerMoneyAvailable(target)
-    ns.print("INFO\n"
+    ns.print("INFO:\n"
     +Math.round(targetMoney)+"\n"+targetMaxMoney*targetMoneyThresh+"\n"
-    +Math.round((targetMoney/(targetMaxMoney*targetMoneyThresh))) + "%\n"
+    +(targetMoney/(targetMaxMoney*targetMoneyThresh)) + "%\n"
     +Math.round(targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
     if (args.hack) { //flag --hack for just hacking
       console.log(await ns.hack(target));

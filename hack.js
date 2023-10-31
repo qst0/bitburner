@@ -1,6 +1,6 @@
 // hack.hs
 // Bitburner v2.5.0
-// wget https://github.com/qst0/bitburner/blob/main/hack.js hack.js
+// wget https://raw.githubusercontent.com/qst0/bitburner/main/hack.js hack.js
 
 /** @param {import(".").NS } ns */
 
@@ -17,6 +17,8 @@ export async function main(ns) {
             while (targetMoney > 0) {
                 let money = await ns.hack(target)
                 console.log(target + " hacked for " + money + " of " + targetMoney);
+                targetMoney = ns.getServerMoneyAvailable(target)
+                console.log("target money remaining:", targetMoney)
             }
         }
     }
