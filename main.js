@@ -93,7 +93,7 @@ export async function main(ns) {
   console.log("ns:", ns);
   ns.tprint('Program START');
   //Print the args in the console, if there are any
-  if (ns.args.length){
+  if (ns.args.length) {
     let msg = " "
     for (let i = 0; i < ns.args.length; i++) {
       msg = msg + " " + ns.args[i]
@@ -196,8 +196,6 @@ export async function main(ns) {
     return target;
   }
 
-
-
   function run_each_server(hostnames) {
     let servers_deployed_to = 0
     for (const hostname in hostnames) {
@@ -226,19 +224,12 @@ export async function main(ns) {
         }
       }
 
-
-
-      if (deploy_on
-        && server.maxRam > mem_work
-        && server.hostname != 'home') {
+      if (deploy_on && server.maxRam > mem_work && server.hostname != 'home') {
         ns.scp(work_script_filename, hostname)
-        let killed = ns.killall(hostname)
-        if (killed){
-          ns.tprint("killall "+hostname)
-        }
+        ns.killall(hostname)
         target = select_target(hacking_level, ports_open, hard_server_data)
         ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
-          target,server_dict[target].moneyMax, server_dict[target].minDifficulty)
+          target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
         servers_deployed_to++;
       }
 
@@ -287,7 +278,7 @@ export async function main(ns) {
         ns.killall(hostname)
         let target = select_target(hacking_level, ports_open, hard_server_data)
         ns.exec(work_script_filename, hostname, Math.floor(ram / mem_work),
-          target,server_dict[target].moneyMax, server_dict[target].minDifficulty)
+          target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
 
       } else {
         //console.log("Cannot Upgrade " + hostname + " to " + ram + "\n" +
@@ -300,14 +291,13 @@ export async function main(ns) {
 
   // Home Work
   update_data(); // Make sure we have the most up to date data
-  ns.tprint('killall home')
   ns.killall('home') // it doesn't stop itself ;-)
   console.log(home_ram, mem_main, home_ram - mem_main)
   //TODO fix this... why need to *2 why won't work run?
   let home_mem_left = home_ram - mem_main * 2
-  let target = select_target(hacking_level,ports_open,hard_server_data)
+  let target = select_target(hacking_level, ports_open, hard_server_data)
   ns.exec(work_script_filename, "home", Math.floor(home_mem_left / mem_work),
-   target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+    target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
 
   // Functions END
   let question = "Would you like to configure?"
