@@ -25,5 +25,6 @@ rather than just getting the default output
 we can save space because of the cost these in memory
 if the main.js knows, or can learn, the server security and money
 that should be passed along to the work order as needed.
+* TODO is this true? I'm done searching if I find ## servers (main.js)
 
 ## [Hacker/Dev Log + Thoughts about Bitburner as I play it](/devlog.txt)

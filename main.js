@@ -295,8 +295,7 @@ while (searching || upgrade_servers_on) {
   if (searching) {
     run_each_server(server_dict);
     save_server_dict();
-    // TODO, make sure this is true
-    // I'm done searching if I find 96 servers
+    // TODO is this true? I'm done searching if I find 96 servers
     if (server_dict_len >= known_highest_server_count) {
       console.log("search complete", server_dict, server_dict_len)
       searching = false;
@@ -305,7 +304,7 @@ while (searching || upgrade_servers_on) {
   if (upgrade_servers_on) {
     await upgrade_servers()
   }
-  ns.tprint('cycle complete')
+  console.log("cycle complete")
   await ns.sleep(1000)
 }
 ns.tprint('Program END');
