@@ -23,9 +23,16 @@ I have tried my best to figure everything out from the in-game instructions but 
 ## Hack/Dev Log + Thoughts about Bitburner as I play it:
 
 ### Oct 31st
+
+It's 0120h and I've finished the goal, I no longer need the hard data.
+But I need to fix hack.js that just hacks up the chain now...
+Also, I think I should target lower than the higest possible target...
+Not sure what tho.
+
 Halloween! Spooky Bitburnin'
 
 Goals for this day: hack based on server_data, not HARD_DATA
+
 
 ### Oct 30th
 
