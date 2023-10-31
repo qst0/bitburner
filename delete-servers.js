@@ -1,6 +1,6 @@
+// delete-servers.js
 // Bitburner v2.5.0 (b87b8b4be)
-// https://qst0.com // https://qst4.com
-// src: https://github.com/qst0/bitburner
+// wget https://github.com/qst0/bitburner/blob/main/delete-servers.js delete-servers.js
 
 // Coding Autocomplete
 // /** @param {NS} ns */ // in-game editor

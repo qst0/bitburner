@@ -1,3 +1,6 @@
+// work.js
+// Bitburner v2.5.0 (b87b8b4be)
+// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
 /** @param {import(".").NS } ns */
 
 export async function main(ns) {

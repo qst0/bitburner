@@ -1,7 +1,7 @@
 // main.js
 // Bitburner v2.5.0 (b87b8b4be)
-// qst: https://qst0.com // https://qst4.com
-// src: https://github.com/qst0/bitburner
+// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
+// wget https://github.com/qst0/bitburner/blob/main/main.js main.js
 
 /** @param {import(".").NS } ns */
 

@@ -1,7 +1,7 @@
 // purchase-servers.js
 // Bitburner v2.5.0 (b87b8b4be)
-// qst: https://qst0.com // https://qst4.com
-// src: https://github.com/qst0/bitburner
+// wget https://github.com/qst0/bitburner/blob/main/work.js work.js
+// wget https://github.com/qst0/bitburner/blob/main/purchase-servers.js purchase-servers.js
 
 /** @param {NS} ns */
 export async function main(ns) {

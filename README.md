@@ -7,7 +7,7 @@ src: [https://github.com/bitburner-official/bitburner-src](https://github.com/bi
 
 Bitburner is an incremental / idling game where you can write js (javascript) using a library called ns (netscript) to hack a 2077 cyberpunk world.
 
-# What's this code?
+## What are these files anyway?
 
 These are my net scripts I've been using to automate the discovery and hacking of targets in the game. Using the dev in game instructions and the dev tools I continue to improve them.
 
@@ -15,19 +15,30 @@ I have tried my best to figure everything out from the in-game instructions but 
 
 ## TODO
 
-* main.js script is bigger than 8GB and won't work on the starting home server.
-* WIP work script updates with hacking level
 * save config to localstorage, config flag
-* fix reset flag and local storage
-* backdoor solution?
-* integrate purchasing of servers for reset
+* automate backdoor / reach singularity.
 * work script has data calls that could be replaced with hard numbers to save ram.
-* project / goal management or rank
 
-## Thoughts about the game as I play it:
+## Hack/Dev Log + Thoughts about Bitburner as I play it:
 
+### Oct 31st
+Halloween! Spooky Bitburnin'
+
+Goals for this day: hack based on server_data, not HARD_DATA
 
 ### Oct 30th
+
+I spent some time cleaning up the repo and updating the README because I like that sort of thing. Kinda silly but fun. Now I should seriously take that break :-)
+
+Time Played:
+
+Since last Augmentation installation 5 hours 59 minutes 37 seconds
+
+Total: 3 days 9 hours 48 minutes 42 seconds
+
+
+It's almost the 31st, ~22:20 now I've hit a bit of a slump in my motivation. I need to figure out what I want to do next, after I get the rep and agumentations for Tian Di Hui, which is what I'm having the character focus on now. I should make the server finder smarter and not just find the hardest thing to weaken/grow/hack and go for it with all of the power. But I need a plan for that. I should look at the formulas.exe again but before that I know I can at least use the server_data/dict that I make when searching to pick the servers like I do now, but a bit smarter and with a complete list, which I think is 96 hosts, but I can't confirm that yet. 10k rep left. I guess I'll let it idle and find something else to do for a bit. Let my brain settle before this feels like work instead of fun-work. I joined the discord. I'm still in the early game, since I haven't finished fl1ght.exe! But that's all I asked/looked at for the most part. Don't want to spoil it for myself.
+
 I've moved some of the project tracking into the repo.
 
 I left everything running overnight, I woke up and the server I was targeting has no money left. Figuring out a way to move forward from that would be good. I think just updating the data and rolling out again, that is deploying work.js again to all of the purchased servers with my updated hacking level, port opener count and target when I see the server has nothing left could work. Testing it live will take time, so maybe I should write tests? I'll check my todo-list. I'm trying to get a few more augmentations from The Black Hand before I reset. I'm sitting on 400b but I need a bit more to upgrade the cores on my home computer and I still want to buy more augmentations before I install them. The game loop is very fun and I think when I get to the end game I want to look at the codebase more. I bought Formulas.exe last time and I didn't use it. A waste of 5b. But I don't really know how, so I need to figure that out. I'm at 775~ hacking level now, and you can write Formulas.exe yourself at 1000. But I think buying it might be faster. I scale faster with my private servers. I wonder if installing more frequently is a better tactic?

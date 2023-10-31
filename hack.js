@@ -1,3 +1,7 @@
+// hack.hs
+// Bitburner v2.5.0
+// wget https://github.com/qst0/bitburner/blob/main/hack.js hack.js
+
 /** @param {import(".").NS } ns */
 
 //Just hack all the servers I've copied into here.
