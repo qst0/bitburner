@@ -125,7 +125,7 @@ export async function main(ns) {
     let highestValue = -1; // Init with a low value
     let target = null;
     Object.getOwnPropertyNames(server_dict).forEach((key) => {
-      let serverHackLevel = server_dict[key]['hackDifficulty'];
+      let serverHackLevel = server_dict[key]['requiredHackingSkill'];
       let numOpenPortsRequired = server_dict[key]['numOpenPortsRequired'];
       if (serverHackLevel <= hackLevel && numOpenPortsRequired <= portsOpen) {
         // use a better formula here? this just avoids hacking home and dark-net
@@ -136,7 +136,10 @@ export async function main(ns) {
         }
       }
     });
-    console.log("Targeting: ", target)
+    console.log("Targeting: ", target,
+     "Hacking Level: ", hackLevel,
+    "Hack Req: ", highestValue,
+    "Difficulty: ", server_dict[target]['hackDifficulty'])
     return target;
   }
 
@@ -171,6 +174,7 @@ function run_each_server(hostnames) {
     if (deploy_on && server.maxRam > mem_work && server.hostname != 'home') {
       ns.scp(work_script_filename, hostname)
       ns.killall(hostname)
+      hacking_level = ns.getHackingLevel()
       target = select_target(hacking_level, ports_open)
       ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
         target, server_dict[target].moneyMax, server_dict[target].minDifficulty)

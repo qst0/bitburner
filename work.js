@@ -4,11 +4,17 @@
 /** @param {import(".").NS } ns */
 
 export async function main(ns) {
+  const worker_version = 0.2
+  ns.print("Worker version: "+ worker_version)
+
   const args = ns.flags([
     ["help", false],
     ["hack", false],
   ]);
   if (args.help) {
+    ns.tprint("help \n Typically, use main.js to deploy workers.\n"+
+    " main.js will configure the workers for you\n"+
+    " run work.js <target> <maxMoney> <minSecurity>")
     return;
   }
 
@@ -21,23 +27,20 @@ export async function main(ns) {
 
   // Infinite loop that continously hacks/grows/weakens the target server
   while (true) {
-    // Print the time, so we can more easily check how long work has been going.
-    // TODO improve this, we can calculate how long jobs take and print them rather
-    // rather than just getting the default output
     let currentTime = new Date();
     let formattedTime = currentTime.toLocaleTimeString('en-US', time_options);
-    ns.print(formattedTime);
-    // TODO, move this logic up another level, there are only three work orders
-    // we can save space because of the cost these in memory
-    // if the main.js knows, or can learn, the server security and money
-    // that should be passed along to the work order as needed.
-    
     let targetSecurityLevel = ns.getServerSecurityLevel(target)
     let targetMoney = ns.getServerMoneyAvailable(target)
-    ns.print("INFO:\n"
-    +Math.round(targetMoney)+"\n"+targetMaxMoney*targetMoneyThresh+"\n"
-    +(targetMoney/(targetMaxMoney*targetMoneyThresh)) + "%\n"
+
+    ns.print(formattedTime);
+
+    // Print info so we can see what is going on.
+    ns.print("Target Info:\n"
+    +"$"+Math.round(targetMoney)+"\n"
+    +"$"+targetMaxMoney*targetMoneyThresh+"\n"
+    +100*(targetMoney/(targetMaxMoney*targetMoneyThresh)) + "%\n"
     +Math.round(targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
+
     if (args.hack) { //flag --hack for just hacking
       console.log(await ns.hack(target));
     } else if (targetSecurityLevel > targetMinSecurityLevel*minSecurityLevelThresh) {
