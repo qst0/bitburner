@@ -1,8 +1,11 @@
 # BitBurner
 
-While looking for games that help with coding/automation mindset I discovered [Bitburner](https://bitburner-official.github.io/).
+While looking for games that help with coding/automation mindset I discovered Bitburner.
 
-[https://bitburner-official.github.io/](https://bitburner-official.github.io/)
+play: [https://bitburner-official.github.io/](https://bitburner-official.github.io/)
+src: [https://github.com/bitburner-official/bitburner-src](https://github.com/bitburner-official/bitburner-src)
+
+Bitburner is an incremental / idling game where you can write js (javascript) using a library called ns (netscript) to hack a 2077 cyberpunk world.
 
 # What's this code?
 
