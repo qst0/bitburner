@@ -23,10 +23,12 @@ const hard_server_data = [['solaris', 912, 5],
 ['deltaone', 849, 5],
 ['syscore', 849, 5],
 ['zeus-med', 832, 5],
+['vitalife', 810, 5],
 ['zb-institute', 726, 5],
 ['darkweb', 1, 5],
 ['univ-energy', 840, 4],
 ['unitalife', 813, 4],
+['zb-def', 808, 4],
 ['nova-med', 786, 4],
 ['global-pharm', 777, 4],
 ['zb-def', 776, 4],
@@ -79,7 +81,7 @@ if (!server_dict) {
   localStorage.setItem('server_dict', JSON.stringify(server_dict));
 } else {
   server_dict = JSON.parse(server_dict);
-  console.log("Loaded Server Data from localStorage:", server_dict)
+  console.log("Loaded Server Data from localStorage:", server_dict, Object.keys(server_dict).length)
 }
 
 let server_dict_len = Object.keys(server_dict).length;
@@ -138,6 +140,10 @@ export async function main(ns) {
 
   function update_data() {
     mem_main = ns.getScriptRam(this_filename);
+    console.log("mem_main",mem_main)
+    if (mem_main == 0) {
+      mem_main = 7.45
+    }
     mem_work = ns.getScriptRam(work_script_filename)
     home_ram = ns.getServerMaxRam("home")
     hacking_level = ns.getHackingLevel()
@@ -184,7 +190,7 @@ export async function main(ns) {
 
       if (serverHackLevel <= hackLevel && serverPortsOpen <= portsOpen) {
         // use a better formula here this just avoids hacking home and dark-net
-        let value = serverHackLevel * serverPortsOpen;
+        let value = serverHackLevel // * serverPortsOpen;
 
         if (value > highestValue) {
           highestValue = value;
@@ -292,12 +298,20 @@ export async function main(ns) {
   // Home Work
   update_data(); // Make sure we have the most up to date data
   ns.killall('home') // it doesn't stop itself ;-)
-  console.log(home_ram, mem_main, home_ram - mem_main)
-  //TODO fix this... why need to *2 why won't work run?
-  let home_mem_left = home_ram - mem_main * 2
+  console.log("homeram", home_ram)
+  console.log("memmain", mem_main)
+  let home_mem_left = home_ram - mem_main
+  console.log("home_mem_left", home_ram - mem_main)
   let target = select_target(hacking_level, ports_open, hard_server_data)
-  ns.exec(work_script_filename, "home", Math.floor(home_mem_left / mem_work),
-    target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+  let threads = Math.floor(home_mem_left / mem_work)
+  console.log("threads", threads)
+  ns.exec(
+    work_script_filename,
+    "home",
+    threads,
+    target,
+    server_dict[target].moneyMax,
+    server_dict[target].minDifficulty)
 
   // Functions END
   let question = "Would you like to configure?"

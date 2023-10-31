@@ -32,8 +32,9 @@ export async function main(ns) {
     let targetSecurityLevel = ns.getServerSecurityLevel(target)
     let targetMoney = ns.getServerMoneyAvailable(target)
     ns.print("INFO\n"
-    +Math.round(100*targetMoney)+"/"+targetMaxMoney*targetMoneyThresh+"\n"
-    +Math.round(100*targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
+    +Math.round(targetMoney)+"\n"+targetMaxMoney*targetMoneyThresh+"\n"
+    +Math.round((targetMoney/(targetMaxMoney*targetMoneyThresh))) + "%\n"
+    +Math.round(targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
     if (args.hack) { //flag --hack for just hacking
       console.log(await ns.hack(target));
     } else if (targetSecurityLevel > targetMinSecurityLevel*minSecurityLevelThresh) {
