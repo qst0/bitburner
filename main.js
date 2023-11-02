@@ -33,6 +33,9 @@ let mem_main, mem_work, home_ram, hacking_level, server_limit, money, ports_open
 /* MAIN */
 //      //
 export async function main(ns) {
+  const main_version = 0.3
+  ns.print("Main version: "+ main_version)
+
   console.log("ns:", ns);
   ns.tprint('Program START');
   //Print the args in the console, if there are any
@@ -127,7 +130,8 @@ export async function main(ns) {
     Object.getOwnPropertyNames(server_dict).forEach((key) => {
       let serverHackLevel = server_dict[key]['requiredHackingSkill'];
       let numOpenPortsRequired = server_dict[key]['numOpenPortsRequired'];
-      if (serverHackLevel <= hackLevel && numOpenPortsRequired <= portsOpen) {
+      if ((serverHackLevel <= (hackLevel/2)) && numOpenPortsRequired <= portsOpen) {
+        // Hacklevel/2 suggetion read from discord
         // use a better formula here? this just avoids hacking home and dark-net
         let value = serverHackLevel // * serverPortsOpen;
         if (value > highestValue) {

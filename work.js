@@ -35,20 +35,22 @@ export async function main(ns) {
     ns.print(formattedTime);
 
     // Print info so we can see what is going on.
-    ns.print("Target Info:\n"
+    ns.print("INFO Target Info:\n"
     +"$"+Math.round(targetMoney)+"\n"
     +"$"+targetMaxMoney*targetMoneyThresh+"\n"
     +100*(targetMoney/(targetMaxMoney*targetMoneyThresh)) + "%\n"
     +Math.round(targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
 
+    let result = "ERROR";
     if (args.hack) { //flag --hack for just hacking
       console.log(await ns.hack(target));
     } else if (targetSecurityLevel > targetMinSecurityLevel*minSecurityLevelThresh) {
-      await ns.weaken(target);
+      result = await ns.weaken(target);
     } else if (targetMoney < targetMaxMoney*targetMoneyThresh) {
-      await ns.grow(target);
+      result = await ns.grow(target);
     } else {
-      await ns.hack(target);
+      result = await ns.hack(target)
     }
+    ns.print("WARN"+result);
   }
 }
