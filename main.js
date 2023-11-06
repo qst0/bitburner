@@ -33,8 +33,8 @@ let mem_main, mem_work, home_ram, hacking_level, server_limit, money, ports_open
 /* MAIN */
 //      //
 export async function main(ns) {
-  const main_version = 0.3
-  ns.print("Main version: "+ main_version)
+  const main_version = 0.4 // PLUG ME BACK IN: BITNODES
+  ns.print("Main version: " + main_version)
 
   console.log("ns:", ns);
   ns.tprint('Program START');
@@ -78,7 +78,7 @@ export async function main(ns) {
   function save_server_dict() { // to localStorage
     localStorage.setItem('server_dict', JSON.stringify(server_dict));
     server_dict_len = Object.keys(server_dict).length;
-    //console.log(server_dict, server_dict_len)
+    console.log("Saving Server_dict", server_dict, server_dict_len)
   }
 
 
@@ -125,12 +125,13 @@ export async function main(ns) {
 
   // USES HARD DATA FROM TOP OF FILE. TODO use SERVER DATA/DICT
   function select_target(hackLevel, portsOpen) {
+    console.log(hackLevel, portsOpen)
     let highestValue = -1; // Init with a low value
     let target = null;
     Object.getOwnPropertyNames(server_dict).forEach((key) => {
       let serverHackLevel = server_dict[key]['requiredHackingSkill'];
       let numOpenPortsRequired = server_dict[key]['numOpenPortsRequired'];
-      if ((serverHackLevel <= (hackLevel/2)) && numOpenPortsRequired <= portsOpen) {
+      if ((serverHackLevel <= (hackLevel / 2)) && numOpenPortsRequired <= portsOpen) {
         // Hacklevel/2 suggetion read from discord
         // use a better formula here? this just avoids hacking home and dark-net
         let value = serverHackLevel // * serverPortsOpen;
@@ -140,176 +141,181 @@ export async function main(ns) {
         }
       }
     });
-    console.log("Targeting: ", target,
-     "Hacking Level: ", hackLevel,
-    "Hack Req: ", highestValue,
-    "Difficulty: ", server_dict[target]['hackDifficulty'])
+
+    //console.log("Targeting: ", target,
+    // "Hacking Level: ", hackLevel,
+    //"Hack Req: ", highestValue,
+    //"Difficulty: ", server_dict[target]['hackDifficulty'])
     return target;
   }
 
-function run_each_server(hostnames) {
-  let servers_deployed_to = 0
-  for (const hostname in hostnames) {
-    let server = ns.getServer(hostname)
-    discover_servers(hostname)
+  function run_each_server(hostnames) {
+    let servers_deployed_to = 0
+    for (const hostname in hostnames) {
+      let server = ns.getServer(hostname)
+      discover_servers(hostname)
 
-    if (!server.hasAdminRights || server.openPortCount < ports_open) {
-      if (ns.fileExists("BruteSSH.exe", "home")) {
-        ns.brutessh(hostname)
-      }
-      if (ns.fileExists("FTPCrack.exe", "home")) {
-        ns.ftpcrack(hostname)
-      }
-      if (ns.fileExists("relaySMTP.exe", "home")) {
-        ns.relaysmtp(hostname)
-      }
-      if (ns.fileExists("HTTPWorm.exe", "home")) {
-        ns.httpworm(hostname)
-      }
-      if (ns.fileExists("SQLInject.exe", "home")) {
-        ns.sqlinject(hostname)
+      if (!server.hasAdminRights || server.openPortCount < ports_open) {
+        if (ns.fileExists("BruteSSH.exe", "home")) {
+          ns.brutessh(hostname)
+        }
+        if (ns.fileExists("FTPCrack.exe", "home")) {
+          ns.ftpcrack(hostname)
+        }
+        if (ns.fileExists("relaySMTP.exe", "home")) {
+          ns.relaysmtp(hostname)
+        }
+        if (ns.fileExists("HTTPWorm.exe", "home")) {
+          ns.httpworm(hostname)
+        }
+        if (ns.fileExists("SQLInject.exe", "home")) {
+          ns.sqlinject(hostname)
+        }
+
+        if (server.openPortCount >= server.numOpenPortsRequired) {
+          ns.nuke(hostname);
+        }
       }
 
-      if (server.openPortCount >= server.numOpenPortsRequired) {
-        ns.nuke(hostname);
+      if (deploy_on && server.maxRam > mem_work && server.hostname != 'home') {
+        ns.scp(work_script_filename, hostname)
+        ns.killall(hostname)
+        hacking_level = ns.getHackingLevel()
+        target = select_target(hacking_level, ports_open)
+        console.log(target, server_dict[target])
+        ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
+          target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+        servers_deployed_to++;
       }
+
     }
-
-    if (deploy_on && server.maxRam > mem_work && server.hostname != 'home') {
-      ns.scp(work_script_filename, hostname)
-      ns.killall(hostname)
-      hacking_level = ns.getHackingLevel()
-      target = select_target(hacking_level, ports_open)
-      ns.exec(work_script_filename, hostname, Math.floor(server.maxRam / mem_work),
-        target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
-      servers_deployed_to++;
+    // Finished roll out, turn it off.
+    if (deploy_on) {
+      console.log("Finished deploying workers to " + servers_deployed_to + " servers!")
+      deploy_on = false;
     }
 
   }
-  // Finished roll out, turn it off.
-  if (deploy_on) {
-    console.log("Finished deploying workers to " + servers_deployed_to + " servers!")
-    deploy_on = false;
+
+
+  //..................//
+  // async functions  //
+  //..................//
+
+  async function purchase_servers() {
+    ns.exec('purchase-servers.js', 'home')
+    ns.tprint("ERROR: Please `run purchase-servers.js` instead")
+    /* 
+    const purchase_ram = 4;
+    let i = 0;
+    while (i < ns.getPurchasedServerLimit()) {
+      if (money > ns.getPurchasedServerCost(purchase_ram)) {
+        let hostname = hostname_prefix + i
+        ns.purchaseServer(hostname, purchase_ram);
+        ns.scp(work_script_filename, hostname);
+        ns.exec(work_script_filename, hostname, Math.floor(purchase_ram / mem_work));
+        ++i;
+      }
+      await ns.sleep(1000);
+    }
+    */
   }
 
-}
-
-
-//..................//
-// async functions  //
-//..................//
-
-async function purchase_servers() {
-  ns.exec('purchase-servers.js', 'home')
-  ns.tprint("ERROR: Please `run purchase-servers.js` instead")
-  /* 
-  const purchase_ram = 4;
-  let i = 0;
-  while (i < ns.getPurchasedServerLimit()) {
-    if (money > ns.getPurchasedServerCost(purchase_ram)) {
+  async function upgrade_servers() {
+    for (let i = 0; i < server_limit; i++) {
       let hostname = hostname_prefix + i
-      ns.purchaseServer(hostname, purchase_ram);
-      ns.scp(work_script_filename, hostname);
-      ns.exec(work_script_filename, hostname, Math.floor(purchase_ram / mem_work));
-      ++i;
+      let ram = ns.getServerMaxRam(hostname) * 2
+      let cost = ns.getPurchasedServerCost(ram)
+      if (money > cost) {
+        console.log("Upgrading " + hostname + " to " + ram)
+        ns.upgradePurchasedServer(hostname, ram);
+        //spin up another worker
+        ns.killall(hostname)
+        let target = select_target(hacking_level, ports_open)
+        ns.exec(work_script_filename, hostname, Math.floor(ram / mem_work),
+          target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+
+      } else {
+        //console.log("Cannot Upgrade " + hostname + " to " + ram + "\n" +
+        //"$" + Math.floor(money) + " < Cost $" + cost + "\n" +
+        //"Short $" + Math.floor(cost - money))
+      }
+      await ns.sleep(500);
     }
-    await ns.sleep(1000);
   }
+
+  // Home Work
+  update_data(); // Make sure we have the most up to date data
+  ns.killall('home') // it doesn't stop itself ;-)
+  console.log("homeram", home_ram)
+  console.log("memmain", mem_main)
+  let home_mem_left = home_ram - mem_main
+  console.log("home_mem_left", home_ram - mem_main)
+  let target = select_target(hacking_level, ports_open)
+  let threads = Math.floor(home_mem_left / mem_work)
+  console.log("threads", threads)
+  console.log("target", target)
+  let moneyMax = 1000000000
+  let minDifficulty = 100
+  if (server_dict[target]) {
+    moneyMax = server_dict[target].moneyMax;
+    minDifficulty = server_dict[target].minDifficulty;
+  }
+  /*
+  ns.exec(
+    work_script_filename,
+    "home",
+    threads,
+    target,
+    moneyMax,
+    minDifficulty
+  )
   */
-}
 
-async function upgrade_servers() {
-  for (let i = 0; i < server_limit; i++) {
-    let hostname = hostname_prefix + i
-    let ram = ns.getServerMaxRam(hostname) * 2
-    let cost = ns.getPurchasedServerCost(ram)
-    if (money > cost) {
-      console.log("Upgrading " + hostname + " to " + ram)
-      ns.upgradePurchasedServer(hostname, ram);
-      //spin up another worker
-      ns.killall(hostname)
-      let target = select_target(hacking_level, ports_open)
-      ns.exec(work_script_filename, hostname, Math.floor(ram / mem_work),
-        target, server_dict[target].moneyMax, server_dict[target].minDifficulty)
+  // Functions END
+  let question = "Would you like to configure?"
+  let reset_config = await (ns.prompt(question))
 
-    } else {
-      //console.log("Cannot Upgrade " + hostname + " to " + ram + "\n" +
-      //"$" + Math.floor(money) + " < Cost $" + cost + "\n" +
-      //"Short $" + Math.floor(cost - money))
+  // Yes or No Prompt Interactive Configuration
+  if (reset_config) {
+    question = "Reset local storage?"
+    if (await (ns.prompt(question))) {
+      console.log("RESETTING LOCAL STORAGE")
+      ns.tprint("RESETING LOCAL STORAGE")
+      localStorage.clear()
     }
-    await ns.sleep(500);
-  }
-}
 
-// Home Work
-update_data(); // Make sure we have the most up to date data
-ns.killall('home') // it doesn't stop itself ;-)
-console.log("homeram", home_ram)
-console.log("memmain", mem_main)
-let home_mem_left = home_ram - mem_main
-console.log("home_mem_left", home_ram - mem_main)
-let target = select_target(hacking_level, ports_open)
-let threads = Math.floor(home_mem_left / mem_work)
-console.log("threads", threads)
-console.log("target", target)
-let moneyMax = 1000000000
-let minDifficulty = 100
-if (server_dict[target]) {
-  moneyMax = server_dict[target].moneyMax;
-  minDifficulty = server_dict[target].minDifficulty;
-}
-ns.exec(
-  work_script_filename,
-  "home",
-  threads,
-  target,
-  moneyMax,
-  minDifficulty
-)
+    question = "Deploy on all servers?"
+    deploy_on = await (ns.prompt(question))
 
-// Functions END
-let question = "Would you like to configure?"
-let reset_config = await (ns.prompt(question))
+    question = "Upgrade servers?"
+    upgrade_servers_on = await (ns.prompt(question))
 
-// Yes or No Prompt Interactive Configuration
-if (reset_config) {
-  question = "Reset local storage?"
-  if (await (ns.prompt(question))) {
-    console.log("RESETTING LOCAL STORAGE")
-    ns.tprint("RESETING LOCAL STORAGE")
-    localStorage.clear()
+    reset_config = false;
   }
 
-  question = "Deploy on all servers?"
-  deploy_on = await (ns.prompt(question))
+  // Move these to config?
+  let searching = true;
+  discover_servers('home')
+  let known_highest_server_count = 96;
 
-  question = "Upgrade servers?"
-  upgrade_servers_on = await (ns.prompt(question))
-
-  reset_config = false;
-}
-
-// Move these to config?
-let searching = true;
-discover_servers('home')
-let known_highest_server_count = 96;
-
-while (searching || upgrade_servers_on) {
-  update_data();
-  if (searching) {
-    run_each_server(server_dict);
-    save_server_dict();
-    // TODO is this true? I'm done searching if I find 96 servers
-    if (server_dict_len >= known_highest_server_count) {
-      console.log("search complete", server_dict, server_dict_len)
-      searching = false;
+  while (searching || upgrade_servers_on) {
+    update_data();
+    if (searching) {
+      console.log("Searching!", server_dict, server_dict_len)
+      run_each_server(server_dict);
+      save_server_dict();
+      // TODO is this true? I'm done searching if I find 96 servers
+      if (server_dict_len >= known_highest_server_count) {
+        console.log("search complete", server_dict, server_dict_len)
+        searching = false;
+      }
     }
+    if (upgrade_servers_on) {
+      await upgrade_servers()
+    }
+    console.log("cycle complete")
+    await ns.sleep(1000)
   }
-  if (upgrade_servers_on) {
-    await upgrade_servers()
-  }
-  console.log("cycle complete")
-  await ns.sleep(1000)
-}
-ns.tprint('Program END');
+  ns.tprint('Program END');
 }

@@ -5,16 +5,16 @@
 
 export async function main(ns) {
   const worker_version = 0.2
-  ns.print("Worker version: "+ worker_version)
+  ns.print("Worker version: " + worker_version)
 
   const args = ns.flags([
     ["help", false],
     ["hack", false],
   ]);
   if (args.help) {
-    ns.tprint("help \n Typically, use main.js to deploy workers.\n"+
-    " main.js will configure the workers for you\n"+
-    " run work.js <target> <maxMoney> <minSecurity>")
+    ns.tprint("help \n Typically, use main.js to deploy workers.\n" +
+      " main.js will configure the workers for you\n" +
+      " run work.js <target> <maxMoney> <minSecurity>")
     return;
   }
 
@@ -23,7 +23,7 @@ export async function main(ns) {
   const targetMinSecurityLevel = ns.args[2];
   const minSecurityLevelThresh = 1.2; // 20% margin of error
   const targetMoneyThresh = 0.8; //20% margin of error
-  const time_options = {hour: '2-digit',minute: '2-digit',second: '2-digit'};
+  const time_options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
 
   // Infinite loop that continously hacks/grows/weakens the target server
   while (true) {
@@ -36,21 +36,21 @@ export async function main(ns) {
 
     // Print info so we can see what is going on.
     ns.print("INFO Target Info:\n"
-    +"$"+Math.round(targetMoney)+"\n"
-    +"$"+targetMaxMoney*targetMoneyThresh+"\n"
-    +100*(targetMoney/(targetMaxMoney*targetMoneyThresh)) + "%\n"
-    +Math.round(targetSecurityLevel)+"<"+targetMinSecurityLevel*minSecurityLevelThresh)
+      + "$" + Math.round(targetMoney) + "\n"
+      + "$" + targetMaxMoney * targetMoneyThresh + "\n"
+      + 100 * (targetMoney / (targetMaxMoney * targetMoneyThresh)) + "%\n"
+      + Math.round(targetSecurityLevel) + "<" + targetMinSecurityLevel * minSecurityLevelThresh)
 
     let result = "ERROR";
     if (args.hack) { //flag --hack for just hacking
       console.log(await ns.hack(target));
-    } else if (targetSecurityLevel > targetMinSecurityLevel*minSecurityLevelThresh) {
+    } else if (targetSecurityLevel > targetMinSecurityLevel * minSecurityLevelThresh) {
       result = await ns.weaken(target);
-    } else if (targetMoney < targetMaxMoney*targetMoneyThresh) {
+    } else if (targetMoney < targetMaxMoney * targetMoneyThresh) {
       result = await ns.grow(target);
     } else {
       result = await ns.hack(target)
     }
-    ns.print("WARN"+result);
+    ns.print("WARN" + result);
   }
 }

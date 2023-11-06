@@ -1,5 +1,9 @@
 # devlog.md
 
+### Nov 5th
+
+I stoppe playing for awhile, but I've been poking at the game every so often and I ended up triggering something I can't even put in here. It's a spoiler for the game so. I'm back playing at least somewhat passively. Which is part of the apeal of the gameplay in such a game. I've updated my saves, but I'm back where I started until I really put more 'work' into the game and update my scripts!
+
 ### Nov 1st
 
 It's 2122h and I was mainly busy with other things today that I haven't journaled about. But I returned to the game after starting some last world area related faction augmentations. I have the 2500 hacking I think now too, but I don't have the money. I should if I leave my servers hacking all night. I infiltrated the n00dles company (located in New Tokyo) and sold the reward for .5m nothing really but it was cool to have played with that new part of the game. I also got the stock market stuff. But don't plan on writing something for it. I've kinda grown tired of hyper focusing on the game at this point but I got a good few days with a good few hours and I can play idling now, at least until the next reveal. Oh- and the coding contracts! I should do one of them, I can do them in python easier than js I think. But it might be cool to learn it regardless. But I find myself going back and relearning things again a lot. Anyway. Rambling again. Added my saves and whatever changes (work logging and some main fixes). I still haven't fixed my next TODO, which is to fix the config.

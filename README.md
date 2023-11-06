@@ -15,16 +15,19 @@ I have tried my best to figure everything out from the in-game instructions but 
 
 ## TODO
 
-* save config to localstorage, config flag
-* automate backdoor / reach singularity.
-* work script has data calls that could be replaced with hard numbers to save ram.
-* move to github issue tracking?
-* Print the time, so we can more easily check how long work has been going. TODO improve this, we can calculate how long jobs take and print them rather
-rather than just getting the default output
-* TODO, move work logic up another level, there are only three work orders
-we can save space because of the cost these in memory
-if the main.js knows, or can learn, the server security and money
-that should be passed along to the work order as needed.
-* TODO is this true? I'm done searching if I find ## servers (main.js)
 
-## [Hacker/Dev Log + Thoughts about Bitburner as I play it](/devlog.txt)
+* automate backdoor / reach singularity / go for it.
+* Fix main.js and work.js to work from new file / full reset
+* Save config to localstorage, config flags
+* Improve time stamps
+* Calculate how long jobs take, how many weakens, grows till ready.
+* What makes more servers appear for discovery? Hack level or what?
+* Complete a contract to see what rewards are like
+* move work logic up another level, there are only three work orders
+    we can save space because of the cost these in memory
+    if the main.js knows, or can learn, the server security and money
+    that should be passed along to the work order as needed.
+* move to TODO list to issue tracking, oof! such work-game. ;-)
+
+
+## [Hacker/Dev Log + Thoughts about Bitburner as I play it](/devlog.md)

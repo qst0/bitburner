@@ -1,5 +1,7 @@
 contracts.txt
 
+// TODO complete a contract to see what rewards are like
+
 I installed my augments, so these are gone from where I last found them >.<
 
 //
